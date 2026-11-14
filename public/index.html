@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FOOTBALL HUB | 축구 통계 센터</title>
+<style>
+:root{--bg:#090d16;--panel:#121a29;--panel2:#182338;--line:#26344c;--text:#f3f6fc;--muted:#91a0b8;--gold:#f5c451;--green:#55d6a2}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#1b3151 0,transparent 34%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:26px max(20px,calc((100vw - 1180px)/2));border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-weight:950;letter-spacing:2px;font-size:22px}.logo span{color:var(--gold)}.sub{color:var(--muted);font-size:12px;margin-top:4px}
+.wrap{max-width:1180px;margin:auto;padding:28px 20px 70px}.hero{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:24px}.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px}.hero h1{font-size:clamp(30px,5vw,52px);line-height:1.05;margin:10px 0}.hero p{color:var(--muted);margin:0;max-width:650px}
+.pill{border:1px solid #38506f;border-radius:999px;padding:9px 13px;color:#b8c8df;font-size:12px;white-space:nowrap}
+.searchbox{background:linear-gradient(135deg,#17243a,#101827);border:1px solid #30415d;border-radius:18px;padding:18px;margin:24px 0}.searchrow{display:flex;gap:10px;flex-wrap:wrap}.searchrow input,.searchrow select{background:#0c1422;border:1px solid #34445f;border-radius:10px;color:white;padding:14px;font-size:15px;min-width:180px;flex:1}.btn{background:var(--gold);border:0;border-radius:10px;padding:13px 20px;font-weight:900;color:#17130a;cursor:pointer}.btn.secondary{background:#24344d;color:#eaf1fc;border:1px solid #3a4c68}
+.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 14px}.tab{border:1px solid var(--line);background:#111a29;color:#b7c4d8;border-radius:10px;padding:11px 15px;white-space:nowrap;cursor:pointer}.tab.active{background:#f5c451;color:#17130a;border-color:#f5c451;font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:linear-gradient(160deg,#151f30,#101725);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}.span8{grid-column:span 8}.span4{grid-column:span 4}.span12{grid-column:span 12}.card h2{font-size:17px;margin:0 0 14px}.muted{color:var(--muted)}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:#0d1523;border:1px solid #25334a;border-radius:12px;padding:14px}.stat b{font-size:25px;color:var(--gold);display:block}.stat small{color:var(--muted)}
+.list{display:grid;gap:9px}.rowitem{display:flex;align-items:center;gap:12px;background:#0d1523;border:1px solid #25334a;padding:12px;border-radius:12px}.rank{font-size:22px;font-weight:950;color:var(--gold);width:28px}.rowitem .grow{flex:1;min-width:0}.rowitem strong{display:block}.rowitem small{color:var(--muted)}.value{font-weight:900;color:var(--gold);text-align:right}
+.notice{border:1px dashed #465873;background:#111b2b;border-radius:12px;padding:14px;color:#bac8db;line-height:1.6;font-size:13px}.error{color:#ffb7a8}.hidden{display:none!important}
+footer{border-top:1px solid var(--line);padding:20px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:760px){header{padding:18px}.wrap{padding:22px 14px 50px}.hero{display:block}.pill{display:inline-block;margin-top:14px}.span8,.span4{grid-column:span 12}.statgrid{grid-template-columns:repeat(2,1fr)}}
+</style></head>
+<body>
+<header><div><div class="logo">FOOTBALL<span>HUB</span></div><div class="sub">축구 기록을 검색하고 비교하는 통계 플랫폼</div></div><div class="pill">MATCHES · PLAYERS · CLUBS · RECORDS</div></header>
+<main class="wrap">
+<section class="hero"><div><div class="eyebrow">THE FOOTBALL DATA CENTER</div><h1>축구의 모든 기록,<br><span style="color:var(--gold)">한 곳에서.</span></h1><p>팀·선수·리그·경기 기록을 찾아보고, 득점·출전·도움·순위 통계를 비교해 보세요.</p></div><div class="pill">시즌 데이터 · 경기 기록 · 선수 통계</div></section>
+<section class="searchbox"><div style="font-weight:800;margin-bottom:12px">무엇을 찾고 있나요?</div><div class="searchrow"><input id="query" placeholder="팀 또는 리그 코드 (예: PL, Real Madrid)" aria-label="검색어"><select id="competition"><option value="PL">프리미어리그</option><option value="PD">라리가</option><option value="BL1">분데스리가</option><option value="SA">세리에 A</option><option value="FL1">리그 1</option><option value="CL">챔피언스리그</option><option value="WC">월드컵</option></select><button class="btn" id="searchBtn">검색하기</button></div><div class="muted" style="font-size:12px;margin-top:10px">팀 검색은 아래 팀/경기 메뉴에서 확인할 수 있어요.</div></section>
+<nav class="tabs" id="tabs"><button class="tab active" data-view="overview">홈 대시보드</button><button class="tab" data-view="matches">경기 일정·결과</button><button class="tab" data-view="standings">리그 순위</button><button class="tab" data-view="scorers">득점 순위</button><button class="tab" data-view="teams">팀 검색</button><button class="tab" data-view="records">선수 기록 찾기</button></nav>
+<section id="overview" class="view grid">
+<div class="card span8"><h2>빠른 통계 메뉴</h2><div class="statgrid"><div class="stat"><b>01</b><small>경기 일정·결과</small></div><div class="stat"><b>02</b><small>리그 순위표</small></div><div class="stat"><b>03</b><small>득점·도움 순위</small></div><div class="stat"><b>04</b><small>팀·선수 기록</small></div></div></div>
+<div class="card span4"><h2>데이터 연결 상태</h2><div id="status" class="notice">API 연결을 확인하고 있어요…</div></div>
+<div class="card span12"><h2>원하는 기록을 골라보세요</h2><div class="notice">예시: 특정 리그 득점왕, 팀의 최근 경기, 현재 리그 순위, 선수의 시즌별 출전·득점 기록. 상대 팀별 역대 득점 TOP 5 같은 세부 기록은 별도 경기 이벤트 데이터가 필요하며, 현재 무료 API만으로는 모든 시대·모든 대회를 완전하게 보장할 수 없어요.</div></div>
+</section>
+<section id="matches" class="view hidden grid"><div class="card span12"><h2>경기 일정 · 결과</h2><div id="matchesOut" class="notice">리그를 선택하고 검색하기를 눌러 주세요.</div></div></section>
+<section id="standings" class="view hidden grid"><div class="card span12"><h2>리그 순위</h2><div id="standingsOut" class="notice">리그를 선택하고 검색하기를 눌러 주세요.</div></div></section>
+<section id="scorers" class="view hidden grid"><div class="card span12"><h2>득점 순위</h2><div id="scorersOut" class="notice">리그를 선택하고 검색하기를 눌러 주세요.</div></div></section>
+<section id="teams" class="view hidden grid"><div class="card span12"><h2>팀 검색</h2><div id="teamsOut" class="notice">리그를 선택하고 검색하기를 눌러 주세요.</div></div></section>
+<section id="records" class="view hidden grid"><div class="card span12"><h2>선수 기록 찾기</h2><div class="notice">선수의 시즌별 출전·득점·도움 기록은 데이터 제공 범위에 따라 표시됩니다. 상대 팀을 상대로 한 역대 득점 수, 통산 최다 출전 같은 전체 커리어 순위는 별도 기록 데이터가 있어야 정확히 계산할 수 있어요.</div></div></section>
+</main><footer>FOOTBALL HUB · 기록 제공 범위와 갱신 시점은 데이터 공급자에 따라 달라질 수 있습니다.</footer>
+<script>
+const $=id=>document.getElementById(id);
+let active='overview';
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.add('hidden'));$(b.dataset.view).classList.remove('hidden');active=b.dataset.view;}));
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function api(action,params={}){const u=new URL('/.netlify/functions/football',location.origin);u.searchParams.set('action',action);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u);const j=await r.json();if(!r.ok)throw new Error(j.error||'데이터를 불러오지 못했습니다.');return j;}
+function table(headers,rows){return `<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead><tr>${headers.map(h=>`<th style="text-align:left;color:#91a0b8;padding:11px;border-bottom:1px solid #30415d">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(row=>`<tr>${row.map(c=>`<td style="padding:12px 11px;border-bottom:1px solid #25334a">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
+function err(el,e){el.innerHTML=`<span class="error">${esc(e.message)}</span><br><br>Netlify 환경 변수에 FOOTBALL_DATA_TOKEN이 설정되어 있는지 확인해 주세요.`}
+async function run(){
+const code=$('competition').value, q=$('query').value.trim();
+$('status').textContent='데이터를 불러오는 중…';
+try{
+const [comp,stand,scorers]=await Promise.all([api('competition',{code}),api('standings',{code}),api('scorers',{code})]);
+$('status').innerHTML=`<b style="color:var(--green)">연결 성공</b><br>${esc(comp.competition?.name||code)} 데이터를 불러왔어요.`;
+const s=stand.standings?.[0]?.table||[];
+$('standingsOut').innerHTML=s.length?table(['순위','팀','경기','승','무','패','승점'],s.map(t=>[t.position,esc(t.team.name),t.playedGames,t.won,t.draw,t.lost,t.points])):'순위 데이터가 없습니다.';
+const p=scorers.scorers||[];
+$('scorersOut').innerHTML=p.length?table(['순위','선수','팀','경기','골','도움'],p.map((x,i)=>[i+1,esc(x.player.name),esc(x.team.name),x.playedMatches??'-',x.goals??0,x.assists??0])):'득점 데이터가 없습니다.';
+const matches=await api('matches',{code});
+const ms=matches.matches||[];
+$('matchesOut').innerHTML=ms.length?table(['날짜','홈팀','점수','원정팀','상태'],ms.slice(0,50).map(m=>[new Date(m.utcDate).toLocaleString('ko-KR'),esc(m.homeTeam.name),m.score?.fullTime?.home==null?'vs':`${m.score.fullTime.home} : ${m.score.fullTime.away}`,esc(m.awayTeam.name),esc(m.status)])):'경기 데이터가 없습니다.';
+const teams=await api('teams',{code});
+const ts=teams.teams||[];
+$('teamsOut').innerHTML=ts.length?table(['팀','국가','경기장'],ts.map(t=>[esc(t.name),esc(t.area?.name),esc(t.venue||'-')])):'팀 데이터가 없습니다.';
+if(q){const found=ts.filter(t=>t.name.toLowerCase().includes(q.toLowerCase()));$('teamsOut').innerHTML=found.length?table(['검색 팀','국가','경기장'],found.map(t=>[esc(t.name),esc(t.area?.name),esc(t.venue||'-')])):`검색어 "${esc(q)}"와 일치하는 팀이 없어요. 전체 팀 목록을 표시합니다.`+(ts.length?table(['팀','국가'],ts.map(t=>[esc(t.name),esc(t.area?.name)])):'');}
+}catch(e){$('status').textContent='연결 확인 필요';['standingsOut','scorersOut','matchesOut','teamsOut'].forEach(id=>err($(id),e));}
+}
+$('searchBtn').addEventListener('click',run);
+api('competition',{code:'PL'}).then(x=>$('status').innerHTML=`<b style="color:var(--green)">API 서버 준비됨</b><br>${esc(x.competition?.name||'Premier League')} 데이터 조회 가능`).catch(()=>$('status').textContent='API 키 설정 후 실시간 데이터를 불러올 수 있어요.');
+</script></body></html>
